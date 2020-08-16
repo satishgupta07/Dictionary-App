@@ -4,9 +4,15 @@ let apiKey = '0cb565e4-f236-4f13-9818-576048f6df6e';
 let notFound = document.querySelector('.not__found');
 let defBox = document.querySelector('.def');
 let audioBox = document.querySelector('.audio');
+let loading = document.querySelector('.loading');
 
 searchBtn.addEventListener('click', function(e){
     e.preventDefault();
+
+    // clear data 
+    audioBox.innerHTML = '';
+    notFound.innerText = '';
+    defBox.innerText = '';
     
     //Get input data
     let word = input.value;
@@ -21,6 +27,7 @@ searchBtn.addEventListener('click', function(e){
 })
 
 async function getData(word) {
+    loading.style.display = 'block';
 
     // Ajax call
     const response = await fetch(`https://www.dictionaryapi.com/api/v3/references/learners/json/${word}?key=${apiKey}`);
@@ -28,12 +35,14 @@ async function getData(word) {
 
       // if empty result 
       if (!data.length) {
+        loading.style.display = 'none';
         notFound.innerText = ' No result found';
         return;
       }
 
        // If result is suggestions
       if (typeof data[0] === 'string') {
+        loading.style.display = 'none';
         let heading = document.createElement('h3');
         heading.innerText = 'Did you mean?'
         notFound.appendChild(heading);
@@ -48,6 +57,7 @@ async function getData(word) {
     }
 
     // Result found 
+    loading.style.display = 'none';
     let defination = data[0].shortdef[0];
     defBox.innerText = defination;
 
