@@ -3,6 +3,7 @@ let searchBtn = document.querySelector('#search');
 let apiKey = '0cb565e4-f236-4f13-9818-576048f6df6e';
 let notFound = document.querySelector('.not__found');
 let defBox = document.querySelector('.def');
+let audioBox = document.querySelector('.audio');
 
 searchBtn.addEventListener('click', function(e){
     e.preventDefault();
@@ -49,5 +50,26 @@ async function getData(word) {
     // Result found 
     let defination = data[0].shortdef[0];
     defBox.innerText = defination;
+
+    // Sound 
+    const soundName = data[0].hwi.prs[0].sound.audio;
+        if(soundName) {
+            renderSound(soundName);
+        }
+
+    console.log(data);
+
+}
+
+
+function renderSound(soundName) {
+    // https://media.merriam-webster.com/soundc11
+    let subfolder = soundName.charAt(0);
+    let soundSrc = `https://media.merriam-webster.com/soundc11/${subfolder}/${soundName}.wav?key=${apiKey}`;
+
+    let aud = document.createElement('audio');
+    aud.src = soundSrc;
+    aud.controls = true;
+    audioBox.appendChild(aud);
 
 }
