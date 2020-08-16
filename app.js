@@ -2,6 +2,7 @@ let input = document.querySelector('#input');
 let searchBtn = document.querySelector('#search');
 let apiKey = '0cb565e4-f236-4f13-9818-576048f6df6e';
 let notFound = document.querySelector('.not__found');
+let defBox = document.querySelector('.def');
 
 searchBtn.addEventListener('click', function(e){
     e.preventDefault();
@@ -44,5 +45,9 @@ async function getData(word) {
         })
         return;
     }
+
+    // Result found 
+    let defination = data[0].shortdef[0];
+    defBox.innerText = defination;
 
 }
